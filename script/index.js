@@ -11,8 +11,8 @@ function removeActiveClass(){
     }
 }
 
-function loadVideos(){
-    fetch("https://openapi.programming-hero.com/api/phero-tube/videos")
+function loadVideos(searchText=" "){
+    fetch(`https://openapi.programming-hero.com/api/phero-tube/videos?title=${searchText}`)
     .then((response)=>response.json())
     .then((data)=>{
         removeActiveClass();
@@ -95,7 +95,9 @@ const displayVideos=(videos)=>{
               
                 <div class="intro">
                    <h2 class="font-semibold">${video.title}</h2>
-                   <p class="text-sm text-gray-400 flex gap-2">${video.authors[0].profile_name}<img class="w-5 h-5" src="https://img.icons8.com/?size=96&id=98A4yZTt9abw&format=png" alt=""></p>
+                   <p class="text-sm text-gray-400 flex gap-2">${video.authors[0].profile_name}
+                   ${video.authors[0].verified==true ? `<img class="w-5 h-5" src="https://img.icons8.com/?size=96&id=98A4yZTt9abw&format=png" alt="">`:``}
+                   </p>
                     <p class="text-sm text-gray-400">${video.others.views}</p>
                 </div>
 
@@ -118,5 +120,10 @@ function displayCategories(categories){
     categoryContainer.append(categoryDiv)
    } 
 }
+
+document.getElementById("search-container").addEventListener("keyup",(e)=>{
+   const input =e.target.value;
+   loadVideos(input);
+})
 
 loadCategories();
